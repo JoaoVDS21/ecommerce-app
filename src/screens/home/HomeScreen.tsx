@@ -117,7 +117,8 @@ const HomeScreen: React.FC = () => {
   };
 
   const handleAddToCart = (productId: string) => {
-    const product = products.find(p => p.id === productId);
+    const product = products?.find(p => p.id === productId);
+
     if (product) {
       addItem(product);
     }
@@ -181,7 +182,7 @@ const HomeScreen: React.FC = () => {
       <FeaturedSection>
         <SectionTitle>New Arrivals</SectionTitle>
         <FlatList
-          data={products.slice().reverse()}
+          data={products?.slice().reverse()}
           horizontal
           showsHorizontalScrollIndicator={false}
           keyExtractor={item => `new-${item.id}`}

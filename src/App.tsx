@@ -15,7 +15,6 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <CartProvider>
-            <StatusBar style="auto" />
             <AppNavigator />
           </CartProvider>
         </AuthProvider>

@@ -44,7 +44,6 @@ const AppNavigator: React.FC = () => {
 
   return (
     <NavigationContainer>
-      <StatusBar style="auto" />
       <Stack.Navigator>
         <Stack.Screen
           name="BottomTabs"
