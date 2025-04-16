@@ -7,6 +7,7 @@ import theme from '../../styles/theme';
 import { useCart } from '../../store/cartContext';
 import { useAuth } from '../../store/authContext';
 import { AppNavigationProp } from '../../navigation/navigationTypes';
+import { moneyMask } from '@/utils/masks';
 
 const Section = styled.View`
   margin-bottom: ${theme.spacing.xl}px;
@@ -152,15 +153,16 @@ const CheckoutScreen: React.FC = () => {
   // Process checkout
   const handleCheckout = () => {
     // Validate forms
-    if (Object.values(addressForm).some(value => value === '')) {
-      Alert.alert('Incomplete Address', 'Please fill in all address fields');
-      return;
-    }
     
-    if (paymentMethod === 'credit' && Object.values(paymentForm).some(value => value === '')) {
-      Alert.alert('Incomplete Payment', 'Please fill in all payment fields');
-      return;
-    }
+    // if (Object.values(addressForm).some(value => value === '')) {
+    //   Alert.alert('Incomplete Address', 'Please fill in all address fields');
+    //   return;
+    // }
+    
+    // if (paymentMethod === 'credit' && Object.values(paymentForm).some(value => value === '')) {
+    //   Alert.alert('Incomplete Payment', 'Please fill in all payment fields');
+    //   return;
+    // }
     
     setIsProcessing(true);
     
@@ -183,73 +185,73 @@ const CheckoutScreen: React.FC = () => {
           <Title>Checkout</Title>
           
           <Section>
-            <SectionTitle>Shipping Address</SectionTitle>
+            <SectionTitle>Endereço de envio</SectionTitle>
             <FormContainer>
               <InputContainer>
-                <InputLabel>Full Name</InputLabel>
+                <InputLabel>Nome completo</InputLabel>
                 <Input
                   value={addressForm.fullName}
                   onChangeText={value => updateAddressForm('fullName', value)}
-                  placeholder="Enter your full name"
+                  placeholder="Digite o nome completo"
                 />
               </InputContainer>
               
               <InputContainer>
-                <InputLabel>Street Address</InputLabel>
+                <InputLabel>Logradouro</InputLabel>
                 <Input
                   value={addressForm.street}
                   onChangeText={value => updateAddressForm('street', value)}
-                  placeholder="Enter your street address"
+                  placeholder="Digite o logradouro"
                 />
               </InputContainer>
               
               <RowContainer>
                 <InputContainer style={{ flex: 1 }}>
-                  <InputLabel>City</InputLabel>
+                  <InputLabel>Cidade</InputLabel>
                   <Input
                     value={addressForm.city}
                     onChangeText={value => updateAddressForm('city', value)}
-                    placeholder="City"
+                    placeholder="Cidade"
                   />
                 </InputContainer>
                 
                 <InputContainer style={{ flex: 1 }}>
-                  <InputLabel>State/Province</InputLabel>
+                  <InputLabel>Estado/Província</InputLabel>
                   <Input
                     value={addressForm.state}
                     onChangeText={value => updateAddressForm('state', value)}
-                    placeholder="State"
+                    placeholder="Estado"
                   />
                 </InputContainer>
               </RowContainer>
               
               <RowContainer>
                 <InputContainer style={{ flex: 1 }}>
-                  <InputLabel>ZIP/Postal Code</InputLabel>
+                  <InputLabel>CEP</InputLabel>
                   <Input
                     value={addressForm.zip}
                     onChangeText={value => updateAddressForm('zip', value)}
-                    placeholder="ZIP Code"
+                    placeholder="Código do CEP"
                     keyboardType="numeric"
                   />
                 </InputContainer>
                 
                 <InputContainer style={{ flex: 1 }}>
-                  <InputLabel>Country</InputLabel>
+                  <InputLabel>País</InputLabel>
                   <Input
                     value={addressForm.country}
                     onChangeText={value => updateAddressForm('country', value)}
-                    placeholder="Country"
+                    placeholder="País"
                   />
                 </InputContainer>
               </RowContainer>
               
               <InputContainer>
-                <InputLabel>Phone Number</InputLabel>
+                <InputLabel>Número de telefone</InputLabel>
                 <Input
                   value={addressForm.phone}
                   onChangeText={value => updateAddressForm('phone', value)}
-                  placeholder="Enter your phone number"
+                  placeholder="Digite seu número de telefone"
                   keyboardType="phone-pad"
                 />
               </InputContainer>
@@ -257,7 +259,7 @@ const CheckoutScreen: React.FC = () => {
           </Section>
           
           <Section>
-            <SectionTitle>Payment Method</SectionTitle>
+            <SectionTitle>Método de pagamento</SectionTitle>
             <FormContainer>
               <PaymentMethodContainer 
                 isSelected={paymentMethod === 'credit'}
@@ -266,7 +268,7 @@ const CheckoutScreen: React.FC = () => {
                 <PaymentIcon>
                   <Text>💳</Text>
                 </PaymentIcon>
-                <PaymentText>Credit/Debit Card</PaymentText>
+                <PaymentText>Cartão de crédito/débito</PaymentText>
               </PaymentMethodContainer>
               
               <PaymentMethodContainer 
@@ -282,7 +284,7 @@ const CheckoutScreen: React.FC = () => {
               {paymentMethod === 'credit' && (
                 <>
                   <InputContainer>
-                    <InputLabel>Card Number</InputLabel>
+                    <InputLabel>Número do cartão</InputLabel>
                     <Input
                       value={paymentForm.cardNumber}
                       onChangeText={value => updatePaymentForm('cardNumber', value)}
@@ -293,17 +295,17 @@ const CheckoutScreen: React.FC = () => {
                   </InputContainer>
                   
                   <InputContainer>
-                    <InputLabel>Name on Card</InputLabel>
+                    <InputLabel>Nome no cartão</InputLabel>
                     <Input
                       value={paymentForm.nameOnCard}
                       onChangeText={value => updatePaymentForm('nameOnCard', value)}
-                      placeholder="Enter name as shown on card"
+                      placeholder="Digite o nome mostrado no cartão"
                     />
                   </InputContainer>
                   
                   <RowContainer>
                     <InputContainer style={{ flex: 1 }}>
-                      <InputLabel>Expiry Date</InputLabel>
+                      <InputLabel>Data de expiração</InputLabel>
                       <Input
                         value={paymentForm.expiryDate}
                         onChangeText={value => updatePaymentForm('expiryDate', value)}
@@ -330,23 +332,19 @@ const CheckoutScreen: React.FC = () => {
           </Section>
           
           <Section>
-            <SectionTitle>Order Summary</SectionTitle>
+            <SectionTitle>Resumo do pedido</SectionTitle>
             <FormContainer>
               <TotalRow>
                 <TotalLabel>Subtotal ({items.length} items)</TotalLabel>
-                <TotalAmount>${totalPrice.toFixed(2)}</TotalAmount>
+                <TotalAmount>{moneyMask(totalPrice)}</TotalAmount>
               </TotalRow>
               <TotalRow>
-                <TotalLabel>Shipping</TotalLabel>
-                <TotalAmount>$5.00</TotalAmount>
-              </TotalRow>
-              <TotalRow>
-                <TotalLabel>Tax</TotalLabel>
-                <TotalAmount>${(totalPrice * 0.08).toFixed(2)}</TotalAmount>
+                <TotalLabel>Frete</TotalLabel>
+                <TotalAmount>{moneyMask(5)}</TotalAmount>
               </TotalRow>
               <TotalRow style={{ marginTop: theme.spacing.md }}>
                 <Text style={{ fontWeight: 'bold' }}>Total</Text>
-                <GrandTotal>${(totalPrice + 5 + totalPrice * 0.08).toFixed(2)}</GrandTotal>
+                <GrandTotal>{moneyMask(totalPrice + 5 + totalPrice * 0.08)}</GrandTotal>
               </TotalRow>
             </FormContainer>
           </Section>
@@ -355,7 +353,7 @@ const CheckoutScreen: React.FC = () => {
             {isProcessing ? (
               <ActivityIndicator color="white" />
             ) : (
-              <ButtonText>Place Order</ButtonText>
+              <ButtonText>Finalizar pedido</ButtonText>
             )}
           </Button>
         </ScrollView>

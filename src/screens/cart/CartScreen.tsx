@@ -129,12 +129,12 @@ const CartScreen: React.FC = () => {
     
     if (!isAuthenticated) {
       Alert.alert(
-        'Sign in required',
-        'You need to sign in before proceeding to checkout.',
+        'Login é necessário',
+        'Você precisa realizar o login para seguir com o pagamento.',
         [
-          { text: 'Cancel', style: 'cancel' },
+          { text: 'Cancelar', style: 'cancel' },
           { 
-            text: 'Sign In', 
+            text: 'Entrar', 
             onPress: () => {
               // In a full application, you would navigate to the login screen
               // For now, let's navigate directly to checkout
@@ -155,15 +155,15 @@ const CartScreen: React.FC = () => {
   if (items.length === 0) {
     return (
       <Container>
-        <Title>Your Cart</Title>
+        <Title>Seu carrinho</Title>
         <EmptyCartContainer>
           <Ionicons name="cart-outline" size={80} color={theme.colors.secondaryText} />
-          <EmptyCartText>Your cart is empty</EmptyCartText>
+          <EmptyCartText>Seu carrinho está vazio</EmptyCartText>
           <Button 
             style={{ marginTop: theme.spacing.lg }} 
             onPress={() => navigation.navigate('BottomTabs')}
           >
-            <ButtonText>Continue Shopping</ButtonText>
+            <ButtonText>Continuar comprando</ButtonText>
           </Button>
         </EmptyCartContainer>
       </Container>
@@ -172,7 +172,7 @@ const CartScreen: React.FC = () => {
 
   return (
     <Container>
-      <Title>Your Cart</Title>
+      <Title>Seu carrinho</Title>
       
       <FlatList
         data={items}
@@ -212,7 +212,7 @@ const CartScreen: React.FC = () => {
           <TotalAmount>{moneyMask(totalPrice)}</TotalAmount>
         </TotalRow>
         <TotalRow>
-          <TotalLabel>Taxa de envio</TotalLabel>
+          <TotalLabel>Taxa de entrega</TotalLabel>
           <TotalAmount>{moneyMask(5)}</TotalAmount>
         </TotalRow>
         <TotalRow>
@@ -222,14 +222,14 @@ const CartScreen: React.FC = () => {
       </TotalContainer>
       
       <Button onPress={handleCheckout}>
-        <ButtonText>Proceed to Checkout</ButtonText>
+        <ButtonText>Prosseguir com pagamento</ButtonText>
       </Button>
       
       <TouchableOpacity 
         style={{ marginTop: theme.spacing.md, alignItems: 'center' }}
         onPress={clearCart}
       >
-        <Text style={{ color: theme.colors.error }}>Clear Cart</Text>
+        <Text style={{ color: theme.colors.error }}>Limpar carrinho</Text>
       </TouchableOpacity>
     </Container>
   );

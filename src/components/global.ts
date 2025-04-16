@@ -18,8 +18,8 @@ export const Text = styled.Text`
 `
 
 export const Small = styled.Text`
-  font-size:${theme.fontSizes.xs};
-  color: ${theme.colors.text};
+  font-size:${theme.fontSizes.xs}px;
+  color: ${theme.colors.text}px;
 `
 
 export const Title = styled.Text<TitleProps>`
@@ -30,23 +30,23 @@ export const Title = styled.Text<TitleProps>`
     switch (type){
       case 'h1': 
         return css`
-          font-size: ${theme.fontSizes.xl};
+          font-size: ${theme.fontSizes.xl}px;
         `;
       case 'h2': 
         return css`
-          font-size: ${theme.fontSizes.lg};
+          font-size: ${theme.fontSizes.lg}px;
         `
       case 'h3': 
         return css`
-          font-size: ${theme.fontSizes.md};
+          font-size: ${theme.fontSizes.md}px;
         `
       case 'h4': 
       return css`
-        font-size: ${theme.fontSizes.sm};
+        font-size: ${theme.fontSizes.sm}px;
       `
       case 'h5': 
       return css`
-        font-size: ${theme.fontSizes.xs};
+        font-size: ${theme.fontSizes.xs}px;
       `
     }
   }}
@@ -59,7 +59,7 @@ export const Row = styled.View`
 `
 
 export const Separator = styled.View`
-  margin: ${theme.fontSizes.sm} 0;
+  margin: ${theme.fontSizes.sm}px 0;
   height: 1px;
   background: ${theme.colors.text}20;
 `

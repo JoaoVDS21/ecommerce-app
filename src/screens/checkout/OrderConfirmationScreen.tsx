@@ -66,15 +66,15 @@ const OrderConfirmationScreen: React.FC = () => {
           <Ionicons name="checkmark" size={60} color={theme.colors.success} />
         </SuccessIcon>
         
-        <OrderTitle>Order Confirmed!</OrderTitle>
+        <OrderTitle>Pedido confirmado!</OrderTitle>
         <OrderText>
-          Your order has been placed successfully. We'll send you a notification when your items ship.
+          Seu pedido foi confirmado com sucesso. Enviaremos uma notificação quando seus itens forem enviados.
         </OrderText>
         
-        <OrderNumber>Order Number: {orderId}</OrderNumber>
+        <OrderNumber>Nº Pedido: {orderId}</OrderNumber>
         
         <Button onPress={handleContinueShopping}>
-          <ButtonText>Continue Shopping</ButtonText>
+          <ButtonText>Continuar Comprando</ButtonText>
         </Button>
       </ConfirmationContainer>
     </Container>

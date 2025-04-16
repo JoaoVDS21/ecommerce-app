@@ -22,8 +22,8 @@ const ColorBackground = styled.View`
   left: 0;
   width: 100%;
   height: 200px;
-  border-bottom-left-radius: ${theme.borderRadius.xxxl};
-  border-bottom-right-radius: ${theme.borderRadius.xxxl};
+  border-bottom-left-radius: ${theme.borderRadius.xxxl}px;
+  border-bottom-right-radius: ${theme.borderRadius.xxxl}px;
   background: ${theme.colors.primary};
 `
 
@@ -35,8 +35,6 @@ const ImageFeatured = styled.Image`
   width: 100%;
   height: 150px;
   margin-bottom: -100px;
-  /* border-bottom-right-radius: ${theme.borderRadius.xxxl}px;
-  border-bottom-left-radius: ${theme.borderRadius.xxxl}px; */
   object-fit: cover;
   object-position: center;
 `

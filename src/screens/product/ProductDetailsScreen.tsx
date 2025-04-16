@@ -130,7 +130,7 @@ const ProductDetailsScreen: React.FC = () => {
         <Description>{product.description}</Description>
         
         <Button onPress={handleAddToCart}>
-          <ButtonText>Add to Cart</ButtonText>
+          <ButtonText>Adicionar ao carrinho</ButtonText>
         </Button>
       </ScrollView>
     </Container>

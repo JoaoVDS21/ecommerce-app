@@ -56,8 +56,8 @@ const AppNavigator: React.FC = () => {
           component={ProductDetailsScreen}
           options={{ title: 'Product Details' }}
         />
-        <Stack.Screen name="Cart" component={CartScreen} />
-        <Stack.Screen name="Checkout" component={CheckoutScreen} />
+        <Stack.Screen name="Cart" component={CartScreen} options={{headerShown: false}}/>
+        <Stack.Screen name="Checkout" component={CheckoutScreen} options={{headerShown: false}}/>
         <Stack.Screen
           name="OrderConfirmation"
           component={OrderConfirmationScreen}
