@@ -3,10 +3,10 @@ import { FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components/native';
-import { fetchCategories } from '../../api/categories';
 import { HomeScreenNavigationProp } from '../../navigation/navigationTypes';
 import { Container, Title, Text } from '../../styles/globalStyles';
 import theme from '../../styles/theme';
+import CategoriesService from '@/services/CategoriesService';
 
 const CategoryCard = styled.View`
   background-color: ${theme.colors.card};
@@ -40,7 +40,7 @@ const CategoriesScreen: React.FC = () => {
   
   const { data: categories = [], isLoading, error } = useQuery({
     queryKey: ['categories'],
-    queryFn: fetchCategories
+    queryFn: () => CategoriesService.findAll()
   });
 
   const handleCategoryPress = (categoryId: string, categoryName: string) => {

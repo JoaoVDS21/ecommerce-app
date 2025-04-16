@@ -3,12 +3,13 @@ import { ScrollView, TouchableOpacity } from 'react-native';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components/native';
-import { fetchProductById } from '../../api/products';
 import { AppStackParamList, AppNavigationProp } from '../../navigation/navigationTypes';
 import { Container, Title, Text, Button, ButtonText } from '../../styles/globalStyles';
 import { Ionicons } from '@expo/vector-icons';
 import theme from '../../styles/theme';
 import { useCart } from '../../store/cartContext';
+import { moneyMask } from '../../utils/masks';
+import ProductsService from '@/services/ProductsService';
 
 const ProductImage = styled.Image`
   width: 100%;
@@ -72,7 +73,7 @@ const ProductDetailsScreen: React.FC = () => {
   
   const { data: product, isLoading, error } = useQuery({
     queryKey: ['product', productId],
-    queryFn: () => fetchProductById(productId)
+    queryFn: () => ProductsService.findOne(productId)
   });
 
   const handleAddToCart = () => {
@@ -113,7 +114,7 @@ const ProductDetailsScreen: React.FC = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProductImage source={{ uri: product.imageUrl }} />
         <Title>{product.name}</Title>
-        <Price>${product.price.toFixed(2)}</Price>
+        <Price>{moneyMask(product?.price)}</Price>
         
         <QuantityContainer>
           <Text>Quantity: </Text>

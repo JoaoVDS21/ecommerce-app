@@ -6,15 +6,33 @@ import AppNavigator from './navigation/AppNavigator';
 import { AuthProvider } from './store/authContext';
 import { CartProvider } from './store/cartContext';
 
+import { useEffect } from 'react'
+import { AppState, Platform } from 'react-native'
+import type { AppStateStatus } from 'react-native'
+import { focusManager } from '@tanstack/react-query'
+
 // Create a client
 const queryClient = new QueryClient();
 
 const App = () => {
+  function onAppStateChange(status: AppStateStatus) {
+    if (Platform.OS !== 'web') {
+      focusManager.setFocused(status === 'active')
+    }
+  }
+  
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', onAppStateChange)
+  
+    return () => subscription.remove()
+  }, [])
+  
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <CartProvider>
+            <StatusBar style="auto" />
             <AppNavigator />
           </CartProvider>
         </AuthProvider>

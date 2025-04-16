@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { User } from '../types';
+import { defaultBaseUrl } from '@/services/utils/HttpClient';
 
 const AUTH_TOKEN_KEY = 'auth_token';
 const USER_KEY = 'user_data';
@@ -7,7 +8,7 @@ const USER_KEY = 'user_data';
 export const login = async (email: string, password: string): Promise<User> => {
   try {
     // In a real app, you would make an API call here
-    const response = await fetch('https://api.example.com/login', {
+    const response = await fetch(`${defaultBaseUrl}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +40,7 @@ export const login = async (email: string, password: string): Promise<User> => {
 export const register = async (name: string, email: string, password: string): Promise<User> => {
   try {
     // In a real app, you would make an API call here
-    const response = await fetch('https://api.example.com/register', {
+    const response = await fetch(`${defaultBaseUrl}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

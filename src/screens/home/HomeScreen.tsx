@@ -3,12 +3,15 @@ import { FlatList, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components/native';
-import { fetchProducts } from '../../api/products';
 import { HomeScreenNavigationProp } from '../../navigation/navigationTypes';
 import { Container, Title, Text } from '../../styles/globalStyles';
 import { Ionicons } from '@expo/vector-icons';
 import theme from '../../styles/theme';
 import { useCart } from '../../store/cartContext';
+import { moneyMask } from '../../utils/masks';
+import { useRefreshOnFocus } from '../../hooks/useRefreshOnFocus';
+import CategoriesService from '../../services/CategoriesService';
+import ProductsService from '../../services/ProductsService';
 
 const FeaturedSection = styled.View`
   margin-vertical: ${theme.spacing.lg}px;
@@ -70,7 +73,7 @@ const AddToCartButton = styled.TouchableOpacity`
 const CartButton = styled.TouchableOpacity`
   z-index: 20;
   position: absolute;
-  top: ${theme.spacing.md}px;
+  top: 50px;
   right: ${theme.spacing.md}px;
   width: 40px;
   height: 40px;
@@ -107,10 +110,18 @@ const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { addItem, totalItems } = useCart();
   
-  const { data: products, isLoading, error } = useQuery({
-    queryKey: ['products'],
-    queryFn: fetchProducts
+  const { data: categories, isLoading: isLoadingCategories, error: errorCategories, refetch: refetchCategories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => CategoriesService.findAll()
   });
+
+  const { data: products, isLoading: isLoadingProducts, error: errorProducts, refetch: refetchProducts } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => ProductsService.findAll()
+  });
+
+  useRefreshOnFocus(refetchCategories);
+  useRefreshOnFocus(refetchProducts);
 
   const handleProductPress = (productId: string) => {
     navigation.navigate('ProductDetails', { productId });
@@ -128,7 +139,7 @@ const HomeScreen: React.FC = () => {
     navigation.navigate('Cart');
   };
 
-  if (isLoading) {
+  if (isLoadingProducts) {
     return (
       <Container>
         <Text>Loading products...</Text>
@@ -136,7 +147,7 @@ const HomeScreen: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (errorProducts) {
     return (
       <Container>
         <Text>Error loading products. Please try again later.</Text>
@@ -146,60 +157,40 @@ const HomeScreen: React.FC = () => {
 
   return (
     <Container>
-      <CartButton onPress={navigateToCart}>
-        <Ionicons name="cart-outline" size={24} color={theme.colors.primary} />
-        {totalItems > 0 && (
-          <Badge>
-            <BadgeText>{totalItems}</BadgeText>
-          </Badge>
-        )}
-      </CartButton>
-      
-      <Title>Welcome to ShopEase</Title>
-      
-      <FeaturedSection>
-        <SectionTitle>Featured Products</SectionTitle>
-        <FlatList
-          data={products}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleProductPress(item.id)}>
-              <ProductCard>
-                <ProductImage source={{ uri: item.imageUrl }} />
-                <ProductName numberOfLines={1}>{item.name}</ProductName>
-                <ProductPrice>${item.price.toFixed(2)}</ProductPrice>
-                <AddToCartButton onPress={() => handleAddToCart(item.id)}>
-                  <Ionicons name="add" size={24} color="white" />
-                </AddToCartButton>
-              </ProductCard>
-            </TouchableOpacity>
+        <CartButton onPress={navigateToCart}>
+          <Ionicons name="cart-outline" size={24} color={theme.colors.primary} />
+          {totalItems > 0 && (
+            <Badge>
+              <BadgeText>{totalItems}</BadgeText>
+            </Badge>
           )}
-        />
-      </FeaturedSection>
+        </CartButton>
       
-      <FeaturedSection>
-        <SectionTitle>New Arrivals</SectionTitle>
-        <FlatList
-          data={products?.slice().reverse()}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={item => `new-${item.id}`}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleProductPress(item.id)}>
-              <ProductCard>
-                <ProductImage source={{ uri: item.imageUrl }} />
-                <ProductName numberOfLines={1}>{item.name}</ProductName>
-                <ProductPrice>${item.price.toFixed(2)}</ProductPrice>
-                <AddToCartButton onPress={() => handleAddToCart(item.id)}>
-                  <Ionicons name="add" size={24} color="white" />
-                </AddToCartButton>
-              </ProductCard>
-            </TouchableOpacity>
-          )}
-        />
-      </FeaturedSection>
+      <Title>Bem vindo a, E-Store</Title>
+      
+        {categories && categories.map((category) => category.products.length > 0 && (
+          <FeaturedSection key={category.id}>
+            <SectionTitle>{category.name}</SectionTitle>
+            <FlatList
+              data={category.products}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleProductPress(item.id)}>
+                  <ProductCard>
+                    <ProductImage source={{ uri: item.imageUrl }} />
+                    <ProductName numberOfLines={1}>{item.name}</ProductName>
+                    <ProductPrice>{moneyMask(item?.price || '0')}</ProductPrice>
+                    <AddToCartButton onPress={() => handleAddToCart(item.id)}>
+                      <Ionicons name="add" size={24} color="white" />
+                    </AddToCartButton>
+                  </ProductCard>
+                </TouchableOpacity>
+              )}
+            />
+          </FeaturedSection>
+        ))}
     </Container>
   );
 };

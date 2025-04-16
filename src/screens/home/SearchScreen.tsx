@@ -3,12 +3,13 @@ import { FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components/native';
-import { fetchProducts } from '../../api/products';
 import { Container, Text } from '../../styles/globalStyles';
 import { Ionicons } from '@expo/vector-icons';
 import theme from '../../styles/theme';
 import { HomeScreenNavigationProp } from '../../navigation/navigationTypes';
 import { Product } from '../../types';
+import ProductsService from '@/services/ProductsService';
+import { moneyMask } from '@/utils/masks';
 
 const SearchContainer = styled.View`
   flex-direction: row;
@@ -79,7 +80,7 @@ const SearchScreen: React.FC = () => {
   
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['products'],
-    queryFn: fetchProducts
+    queryFn: () => ProductsService.findAll()
   });
 
   const handleProductPress = (productId: string) => {
@@ -124,7 +125,7 @@ const SearchScreen: React.FC = () => {
                   <ProductImage source={{ uri: item.imageUrl }} />
                   <ProductDetails>
                     <ProductName>{item.name}</ProductName>
-                    <ProductPrice>${item.price.toFixed(2)}</ProductPrice>
+                    <ProductPrice>{moneyMask(item.price)}</ProductPrice>
                   </ProductDetails>
                 </ProductCard>
               </TouchableOpacity>

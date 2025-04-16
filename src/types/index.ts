@@ -8,7 +8,7 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  price: number;
+  price: number | string;
   imageUrl: string;
   categoryId: string;
 }
@@ -17,6 +17,7 @@ export interface Category {
   id: string;
   name: string;
   imageUrl: string;
+  products: Product[];
 }
 
 export interface CartItem {
