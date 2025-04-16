@@ -42,11 +42,10 @@ export default function CarouselBanners() {
           <View
             style={{
               flex: 1,
-              borderWidth: 1,
               justifyContent: "center",
               borderRadius: 8,
               overflow: 'hidden',
-              borderColor: theme.colors.border
+              backgroundColor: theme.colors.border
             }}
           >
             <Image source={{uri: item.imageUrl}} style={{

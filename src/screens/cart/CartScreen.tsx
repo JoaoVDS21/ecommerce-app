@@ -212,7 +212,7 @@ const CartScreen: React.FC = () => {
           <TotalAmount>{moneyMask(totalPrice)}</TotalAmount>
         </TotalRow>
         <TotalRow>
-          <TotalLabel>Shipping</TotalLabel>
+          <TotalLabel>Taxa de envio</TotalLabel>
           <TotalAmount>{moneyMask(5)}</TotalAmount>
         </TotalRow>
         <TotalRow>

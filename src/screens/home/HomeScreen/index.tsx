@@ -14,6 +14,18 @@ import ShelvesService from '@/services/ShelvesService';
 import CarouselBanners from './CarouselBanners';
 import CategoriesService from '@/services/CategoriesService';
 import { Small } from '@/components/global';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+const ColorBackground = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  border-bottom-left-radius: ${theme.borderRadius.xxxl};
+  border-bottom-right-radius: ${theme.borderRadius.xxxl};
+  background: ${theme.colors.primary};
+`
 
 const FeaturedSection = styled.View`
   margin-vertical: ${theme.spacing.lg}px;
@@ -165,6 +177,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: theme.colors.background}}>
+      <ColorBackground/>
       <CartButton onPress={navigateToCart}>
         <Ionicons name="cart-outline" size={24} color={theme.colors.primary} />
         {totalItems > 0 && (
