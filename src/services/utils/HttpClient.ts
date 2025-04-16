@@ -1,5 +1,6 @@
 import axios from "@/config/axios";
 
+export const defaultTenantId = '15d1d006-176f-481c-9bff-9a8d3330bfdc';
 export const defaultBaseUrl = 'http://192.168.15.3:3050';
 export const defaultImg = '/uploads/placeholders/default.jpg';
 
@@ -10,10 +11,12 @@ interface OptionsType {
 }
 class HttpClient {
 	baseURL: string;
+	tenantId: string;
 	defaultImg: string;
 
-	constructor(baseURL: string = defaultBaseUrl, imgPath: string = defaultImg) {
+	constructor(baseURL: string = defaultBaseUrl, tenantId: string = defaultTenantId, imgPath: string = defaultImg) {
 		this.baseURL = baseURL;
+		this.tenantId = tenantId;
 		this.defaultImg = imgPath;
 	}
 
@@ -49,7 +52,8 @@ class HttpClient {
 
 	async makeRequest(path: string, options: OptionsType){
 		let headers: any = {
-			'Content-Type' : 'application/json'
+			'Content-Type' : 'application/json',
+			'x-tenant-id' : this.tenantId
 		};
 
 		if(options.body && (options.headers && !options.headers['Content-Type'])){

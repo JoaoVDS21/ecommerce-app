@@ -1,28 +1,28 @@
-import { Category, Product } from '../types';
+import { Category, Product, Shelf } from '../types';
 import HttpClient from './utils/HttpClient';
 
-class CategoriesService {
+class ShelvesService {
 	httpClient: HttpClient;
 
 	constructor(){
 		this.httpClient = new HttpClient();
 	}
 
-	async findAll(): Promise<Category[]> {
-		const stmt = await this.httpClient.get('/categories');
+	async findAll(): Promise<Shelf[]> {
+		const stmt = await this.httpClient.get('/shelves');
 		
-		return stmt?.map((category: Category) => ({
-			...category,
-			imageUrl: `${this.httpClient.baseURL}${category.imageUrl || this.httpClient.defaultImg}`,
-			products: category.products.map((product: Product) => ({
+		return stmt?.map((shelf: Shelf) => ({
+			...shelf,
+			imageUrl: `${this.httpClient.baseURL}${shelf.imageUrl || this.httpClient.defaultImg}`,
+			products: shelf.products.map((product: Product) => ({
 				...product,
 				imageUrl: `${this.httpClient.baseURL}${product.imageUrl || this.httpClient.defaultImg}`
 			}))
 		}))
 	}
 
-	async findOne(id: number | string): Promise<Category> {
-		const stmt = await this.httpClient.get(`/categories/${id}`);
+	async findOne(id: number | string): Promise<Shelf> {
+		const stmt = await this.httpClient.get(`/shelves/${id}`);
 
 		return stmt ? {
 			...stmt,
@@ -35,4 +35,4 @@ class CategoriesService {
 	}
 }
 
-export default new CategoriesService();
+export default new ShelvesService();

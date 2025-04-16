@@ -40,19 +40,32 @@ export const zipCodeMask = (value: string) => {
   return value;
 }
 
-export const moneyMask = (value: string | number, {withMaskText = true, decimalConverter = true} = {}) => {
-  if(!value) return withMaskText ? "R$ 0,00" : '0,00';
+/**
+ * Função para formatar números para moeda brasileira (R$)
+ * @param value - O valor a ser formatado (pode ser número ou string)
+ * @returns String formatada no padrão brasileiro de moeda
+ */
+export function moneyMask(value: number | string, {withMaskText = true} = {}): string {
+  // Converte para número se for string
+  const numericValue = typeof value === 'string' ? parseFloat(value) : value;
   
-  if(typeof value === 'string') {
-    value = value.replace('.', '').replace(',', '').replace(/\D/g, '')
+  // Verifica se é um número válido
+  if (isNaN(numericValue)) {
+    throw new Error('Valor inválido para formatação de moeda');
   }
+  
+  // Formata para duas casas decimais
+  const formattedValue = numericValue.toFixed(2);
+  
+  // Substitui o ponto por vírgula
+  const withComma = formattedValue.replace('.', ',');
 
-  const options = { minimumFractionDigits: 2 }
-  const result = new Intl.NumberFormat('pt-BR', options).format(
-    decimalConverter ? +value / 100 : +value
-  )
-
-  return (withMaskText ? 'R$ ' : '') + result
+  if(!withMaskText){
+    return withComma;
+  }
+  
+  // Adiciona o prefixo R$
+  return `R$ ${withComma}`;
 }
 
 export const creditCardMask = (cardNumber: string | number) => { 

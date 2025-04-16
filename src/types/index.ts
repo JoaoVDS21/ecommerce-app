@@ -20,6 +20,21 @@ export interface Category {
   products: Product[];
 }
 
+export interface Shelf {
+  id: string;
+  title: string;
+  position: number;
+  imageUrl: string;
+  products: Product[];
+}
+
+export interface Banner {
+  id: string;
+  title: string;
+  position: number;
+  imageUrl: string;
+}
+
 export interface CartItem {
   productId: string;
   product: Product;

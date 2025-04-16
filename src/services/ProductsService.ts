@@ -11,8 +11,8 @@ class ProductsService {
 	async findAll(): Promise<Product[]> {
 		const stmt = await this.httpClient.get('/products');
 		
-		return stmt.map((product: Product) => ({
-			...stmt,
+		return stmt?.map((product: Product) => ({
+			...product,
 			imageUrl: `${this.httpClient.baseURL}${product.imageUrl || this.httpClient.defaultImg}`
 		}))
 	}
@@ -20,10 +20,10 @@ class ProductsService {
 	async findOne(id: number | string): Promise<Product> {
 		const stmt = await this.httpClient.get(`/products/${id}`);
 
-		return {
+		return stmt ? {
 			...stmt,
 			imageUrl: `${this.httpClient.baseURL}${stmt.imageUrl || this.httpClient.defaultImg}`
-		}
+		} : stmt
 	}
 }
 

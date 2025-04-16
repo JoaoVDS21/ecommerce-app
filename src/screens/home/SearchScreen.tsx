@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
@@ -86,14 +86,16 @@ const SearchScreen: React.FC = () => {
   const handleProductPress = (productId: string) => {
     navigation.navigate('ProductDetails', { productId });
   };
-
+  
   // Filter products based on search query
-  const filteredProducts = searchQuery
-    ? products.filter(product => 
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProducts = useMemo(() => {
+    return searchQuery
+    ? products?.filter(product => 
+        product?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product?.description?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : [];
+  }, [searchQuery, products])
 
   return (
     <Container>
@@ -113,7 +115,7 @@ const SearchScreen: React.FC = () => {
       </SearchContainer>
 
       {isLoading ? (
-        <Text>Loading products...</Text>
+        <Text>Carregando produtos...</Text>
       ) : searchQuery ? (
         filteredProducts.length > 0 ? (
           <FlatList
@@ -135,7 +137,7 @@ const SearchScreen: React.FC = () => {
           <NoResultsContainer>
             <Ionicons name="search" size={60} color={theme.colors.secondaryText} />
             <Text style={{ marginTop: theme.spacing.md, textAlign: 'center' }}>
-              No products found for "{searchQuery}"
+              Nenhum produto encontrado para "{searchQuery}"
             </Text>
           </NoResultsContainer>
         )
@@ -143,7 +145,7 @@ const SearchScreen: React.FC = () => {
         <NoResultsContainer>
           <Ionicons name="search" size={60} color={theme.colors.secondaryText} />
           <Text style={{ marginTop: theme.spacing.md, textAlign: 'center' }}>
-            Search for products by name or description
+            Pesquise pelo nome ou descrição dos produtos
           </Text>
         </NoResultsContainer>
       )}

@@ -8,6 +8,7 @@ import theme from '../../styles/theme';
 import { useCart } from '../../store/cartContext';
 import { useAuth } from '../../store/authContext';
 import { AppNavigationProp } from '../../navigation/navigationTypes';
+import { moneyMask } from '@/utils/masks';
 
 const CartItemCard = styled.View`
   background-color: ${theme.colors.card};
@@ -181,7 +182,7 @@ const CartScreen: React.FC = () => {
             <CartItemImage source={{ uri: item.product.imageUrl }} />
             <CartItemDetails>
               <CartItemName>{item.product.name}</CartItemName>
-              <CartItemPrice>${(item.product.price * item.quantity).toFixed(2)}</CartItemPrice>
+              <CartItemPrice>{moneyMask(+item.product.price * item.quantity)}</CartItemPrice>
               
               <CartItemActions>
                 <QuantityButton 
@@ -208,19 +209,15 @@ const CartScreen: React.FC = () => {
       <TotalContainer>
         <TotalRow>
           <TotalLabel>Subtotal</TotalLabel>
-          <TotalAmount>${totalPrice.toFixed(2)}</TotalAmount>
+          <TotalAmount>{moneyMask(totalPrice)}</TotalAmount>
         </TotalRow>
         <TotalRow>
           <TotalLabel>Shipping</TotalLabel>
-          <TotalAmount>$5.00</TotalAmount>
-        </TotalRow>
-        <TotalRow>
-          <TotalLabel>Tax</TotalLabel>
-          <TotalAmount>${(totalPrice * 0.08).toFixed(2)}</TotalAmount>
+          <TotalAmount>{moneyMask(5)}</TotalAmount>
         </TotalRow>
         <TotalRow>
           <Text style={{ fontWeight: 'bold' }}>Total</Text>
-          <GrandTotal>${(totalPrice + 5 + totalPrice * 0.08).toFixed(2)}</GrandTotal>
+          <GrandTotal>{moneyMask(totalPrice + 5 + totalPrice * 0.08)}</GrandTotal>
         </TotalRow>
       </TotalContainer>
       
